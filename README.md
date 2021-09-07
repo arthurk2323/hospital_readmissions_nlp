@@ -1,4 +1,4 @@
-![hospital_readmission](./images/hospital_readmission)
+![hospital_readmission](./images/hospital_readmission.jpeg)
 # Predicting Hospital Readmission Using Discharge Notes
 
 ## Authors
