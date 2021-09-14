@@ -40,6 +40,11 @@ First, individual datasets were cleaned by removing any unnecessary columns. Som
 
 For the text data, I preprocessed it by removing any unnecessary phrases such as line break indicators ("\n") and removed all puncations and numbers. I lowercased all the words. I tokenized, stemmed, and then lemmatize the words. I rejoined the words into one string file so that it can be processed through vectorizers later in the modeling step.
 
+Below is the figure that shows the important words that indicate readmissions using a bag-of-words and logistic regression model.
+In the positive case, we see certain medical conditions such as subdural (hematoma), diabetic ketoacidosis (dka), tracheostomy, and cancer. However, in the irrelevant cases, it is no surprise to see hospice, DNR (do-not-resuscitate), and palliative indicates patients who are reaching their end-of-life care, which explains why some of them are not readmitted.
+
+[insert image on top words for positive and negative cases]
+
 ## Model Analysis
 I tested out 7 models in addition to a dummy model:
 
@@ -49,19 +54,26 @@ I tested out 7 models in addition to a dummy model:
   <li>Multinomial Naives Bayes</li>
   <li>Random Forest</li>
   <li>K-Nearest Neighbors</li>
-  <li>Decision Tree/li>
+  <li>Decision Tree</li>
   <li>Gradient Boost</li>
   <li>Ensemble (Voting)</li>
 </ol>
 
-One thing to consider was the class imbalance. There were ~3K positive cases and ~50K negative cases. I tried three methods to mitigate the class imbalance: undersampling the negative case, passing in class weights, and implementing SMOTE. However, the undersampling of the negative case worked the best. In addition, the tfidf vectorizer worked better than the count vectorizer. Therefore for models 1-7, I used the undersampling method and the tfidf vectorizer to model through a pipeline. I also wanted to focus on the recall/sensitivity score for this project because I wanted to make sure I had a lower false negative rate of accidently misclassifying those who are going to be readmitted as those who will not be readmitted.
+One thing to consider was the class imbalance. There were ~3K positive cases and ~50K negative cases. I tried three methods to mitigate the class imbalance:
+1. Undersampling the negative case
+2. Passing in class weights
+3. Implementing SMOTE
 
-For the dummy model (model 0), the recall score 6%. As for models 1-7, the following figure shows the recall scores.
+However, the undersampling of the negative case worked the best. In addition, the tfidf vectorizer worked better than the count vectorizer. Therefore for models 1-7, I used the undersampling method and the tfidf vectorizer to model through a pipeline. I also wanted to focus on the recall/sensitivity score for this project because I wanted to make sure I had a lower false negative rate or accidently misclassifying those who are going to be readmitted as those who will not be readmitted. When I focused on recall for my grid search, I noticed that in some cases, the recall was very high, but accuracy was very low. Therefore, I decided to look at both recall and accuracy, and tried to find the model that had good scores for both.
+
+For the dummy model (model 0) without any class imbalance mitigation, the recall score 6%. As for models 1-7, the following figure shows the recall scores.
 ![30_day_readmit](./images/Model_Sensitivity_Scores.png)
 
-[insert additional analysis on which model is the best after finishing fine tuning the model]
+We found that model 7, the ensemble model had the best scores. Though model 4 had a higher recall score, the accuracy score was much lower than that of model 7. Therefore, I deteremined that model 7 was the best model. The following figure is the confusion matrixes of the train and test of model 7.
 
-[insert image on top words for positive and negative cases]
+[insert confusion matrix]
+
+
 
 Once I had processed the discharge summary text data, I took the predicted values using my best model and attached them to the other features of my dataset such as patient demographics and diagnoses. I ran this new dataset through models again, and the recall scores are shown in the figure below.
 
