@@ -108,9 +108,11 @@ With more data, I can better fine tune the model to classify correctly which pat
 - Arthur Kim <br>
     Github: [arthursjkim](https://github.com/arthursjkim)<br>
 ## Project Structure
+```
 ├── 01_EDA.ipynb
 ├── 02_Modeling_NLP.ipynb
 ├── 03_Modeling_Additional_Features.ipynb
 ├── README.md
 ├── Readmission_Classification.pdf
 └── images
+```
